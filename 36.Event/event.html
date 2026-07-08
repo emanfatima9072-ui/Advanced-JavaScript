@@ -1,4 +1,75 @@
 <!DOCTYPE html>
-<html lang = "eng">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--Events basically click for example when we click on submit button , on image , or press any key of keyboard that is event -->
+    <h1>Image</h1>
+    <div id = "images">
+    <ul>
+    <li>
+        <!--First way (to make it able like what happens after click)
+        That approch of click event is not visible , issue during your application scaling
+        Note : DO NOT INJECT IN HTML-->
+        <img id ="img-1" src="https://th.bing.com/th/id/OIP.iFKAH_eYOU394kdAk6yTQwHaNA?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" width = "100px" alt = "" onclick = "alert ('imag-1 click first approche')"> </img>
+        <br>
+    </li>
+    <li>
+        <!--Second way IN JS FILE
+        The approche is looking good but it gives you less feature
+        Note : Do Not Use it-->
+       <img id ="img-2" width = "100px" src="https://tse3.mm.bing.net/th/id/OIP.73M9xlTbc4IBccoqlBkxmQHaL2?w=800&h=1280&rs=1&pid=ImgDetMain&o=7&rm=3" alt = "" >
+       <br>
+    </li>
+    <li>
+      <!---Third Way : Best Way 
+      using addEventListener is best because it listens a lot of events-->
+     <img id ="img-3" width = "100px" src="https://wallpapercave.com/wp/wp3992918.jpg" alt = "" >
+    </li>
+    <ul>
+</div>
+<!--More Ways-->
+<!--attachEvent()-->
+<!---jQuerry-> on -->
+<!------------------------------------------------------------------------------------------------>
 
+<!----Event Object discussion-->
+
+<!-------------------------Event Propagation------------------------------------------------------>
+<!-- The third parameter of addEventListener controls event propagation
+    There is two context of event Propagation:
+     1.event bubbling (deafult -> false)
+     2.event capturing (top to bottom)
+    **Event Propagation menas how event travel through html element when it occurs
+    **Event bubbling : event travel from innermost element to outward
+    e.g :
+    <body>
+    <div>
+        <button>click</button>
+    </div>
+   </body> -->
+    <!-- in this case event travel button -> div-> body-> document
+    .event first happen to child then travel to parent
+    **Event capturing:event travel from outer element to inner
+      first parent then travel to child  
+      reverse the order we consider in event bubbling
+    ***To Stop Event Propagation : we use event object with method
+      e.stopPropagation() using this will stop bubbling
+      also discuss e.preventDefault(google link example) -->
+      
+<!---------------------------------------------------------------------------------->  
+
+<!-------------How to target an event like remove image by click in js file-------->
+
+
+
+
+
+
+    <script src="event.js"></script>
+</body>
 </html>
