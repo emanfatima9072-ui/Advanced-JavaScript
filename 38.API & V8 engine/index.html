@@ -1,0 +1,83 @@
+<!---API:
+An API is a bridge that allows two software applications to communicate two software applications to communicate with each other.
+Example :
+Wheather app -> API -> Wheather Server -> returns tenperature
+The app does not store weather information itself.It asks the API.---->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: #212121;">
+<!-- 0	UNSENT	Client has been created. open() not called yet.
+1	OPENED	open() has been called.
+2	HEADERS_RECEIVED	send() has been called, and headers and status are available.
+3	LOADING	Downloading; responseText holds partial data.
+4	DONE	The operation is complete. -->
+</body>
+<script>
+// GitHub provides an API that lets us get information about users, repositories, followers, and more.
+// Example URL:
+// https://api.github.com/users/hiteshchoudhary
+// When you open this URL in a browser, GitHub returns data like:
+// {
+//   "login": "hiteshchoudhary",
+//   "id": 11613311,
+//   "followers": 42000,
+//   "following": 9,
+//   "public_repos": 120
+// }
+// This format is called JSON.
+//----------------------------------------------------------------------------------//
+//*JSON :JSON stands for ----> JavaScript Object Notation
+// It is the most common format used to exchange data between a client and a server.
+// Example:
+// {
+//    "name":"Ali",
+//    "age":20,
+//    "city":"Lahore"
+// }
+// Notice:
+// Data is stored as key-value pairs.
+// Keys are in quotes.
+// Values can be strings, numbers, arrays, objects, booleans, etc.
+//--------------------------------------------------------------------------------//
+// Client:The client is the application requesting data.
+// Examples:Chrome,Brave,Firefox,React App
+// Server:The server stores the data and responds to requests.
+// Example:
+// Browser -> Request -> GitHub Server -> Response -> Browser
+//------------------------------------------------------------------------//
+    const requestUrl = 'https://api.github.com/users/hiteshchoudhary'; // this store url of api
+// Why Do We Need XMLHttpRequest?
+// Imagine you click a button saying:
+// Show GitHub Followers
+// Without JavaScript:
+// The browser would reload the entire page.
+// With XMLHttpRequest:
+// Only the requested data is loaded.
+// The page stays the same.
+    const xhr = new XMLHttpRequest(); // this cretes new object nothing send yet
+    xhr.open('GET', requestUrl)  // this prepares request (Get -> i only want to recieve data , second parameter URL where to send request )  
+    // AT this point request preapred not sent        
+    xhr.onreadystatechange = function(){ // event handler:Whenever something changes in request , this function runs
+//ReadyState :  Every request passes through 5 stages.
+// *State 0 : UNSENT , Nothing happened , Only object created.(const xhr = new XMLHttpRequest())
+// *State 1 : OPENED , After (xhr.open(...)) The request is ready.Still not sent.
+//*State  2 : HEADERS_RECEIVED The request has reached the server.The server replies with headers.
+//*State  3 :LOADING The browser starts downloading the data.
+//*State  4 :DONE Everything finished.Complete response received.Now we can safely use it.
+     console.log(xhr.readyState); //This prints: 1,2,3,4 . sometimes 1,2,3,3,3,4 because downloading can happen in multiple chunks.
+        if (xhr.readyState === 4) { //Checks whether the request has completely finished.readyState === 4 means the full response has been received and is ready to use.
+            const data = JSON.parse(this.responseText) //this.responseText : Contains the response sent by the server.The response is always a string, even if it looks like an object.Example:{"login":"hiteshchoudhary","followers":42000}'
+            //JSON.parse(this.responseText) - > Converts the JSON string into a JavaScript object.Before:'{"followers":42000}'   // String
+            // After:{ followers: 42000 }    // Object
+            console.log(typeof data);
+            console.log(data.followers);//Accesses the followers property of the object and prints its value
+        }
+    }
+    xhr.send(); // send request
+</script>
+</html>
