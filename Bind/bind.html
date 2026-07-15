@@ -1,0 +1,61 @@
+<!---------------------------Bind in javascript--------------------------------->
+<!DOCTYPE html>       <!--Tells the browser  that this is an HTML5 document. -->
+<html lang="en">      <!---Root element ,lang="en" -> tells the browser the page language is English -->
+<head>                <!---Contains information about the webpage.Nothing inside head is shown on screen--->
+   <meta charset="UTF-8"> <!----Supports all characters including English,Urdu,Emojis,etc.------>
+   <meta name="viewport"
+   content="width=device-width, initial-scale=1.0">  <!---- Makes the page responsive on mobile devices-->
+   <title>React</title>   <!---Browser tab title-->
+</head>
+<body>    <!---Everything inside body appears on the webpage--------->
+  <button>Button Clicked</button>  <!---Creates one button--------->
+<script>  
+//First create a class (detail about class in previous notes )       
+class React {        
+        constructor(){          // constructor() is a special method.
+                                 // It automatically runs whenever
+                                 // an object of this class is create
+                                 // using the new keyword
+            this.library = "React" // add property to current object named library
+                                    //This refers to current object
+        
+            this.server = "https://localhost:300" // Adds a property named server 
+            //requirement
+                 document
+                 .querySelector('button') // Searches the webpage for the first <button> element. Return
+                                                 // <button>Button Clicked</button>
+                 .addEventListener('click', this.handleClick.bind(this)) 
+                 
+             // "click" is the event type.
+             //addEventListener() registers a click event.JavaScript waits until the user clicks the button.
+            //  //---------------------Without Bind-----------------------//
+            //  .addEventListener("click",this.handleClick) 
+            //  // When the button is clicked,
+            //  this === button
+            //  // Therefore,
+            // this.server
+            // // is
+            //  undefined
+            //-----------------------------------------------------------------//
+             //this.handleClick.bind(this) -> this.handleClick Refers to the method handleClick(){ }  BUT...
+             //Only the function is passed. Without bind(),JavaScript loses the original object.
+             //bind(this) -> Creates a NEW function.That new function permanently remembers that
+             //this = current React object.The event listener store this bound function.
+    }
+        handleClick(){    // This method executes whenever the button is clicked.Because we used bind(),this still refers to
+                          //the React object.
+            console.log("button clicked");
+            console.log(this.server);
+        }
+    }
+    const app = new React() // Creates a new React object.
+                        // JavaScript:1. Creates an empty object.
+                        // 2. Calls constructor().
+                        // 3. Initializes library and server.
+                        // 4. Attaches the click event.
+                        // 5. Returns the object.
+                        // app now stores the React object.
+</script>
+</body>
+
+
