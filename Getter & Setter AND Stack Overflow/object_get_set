@@ -1,0 +1,112 @@
+////---------------- JavaScript Getters and Setters in Object Literals ----------------//
+//// In JavaScript, getters and setters can also be defined directly
+//// inside an object literal.
+//// This is a simpler syntax compared to Object.defineProperty().
+//// Syntax:
+//// const obj = {
+////     get propertyName() {
+////         // return value
+////     },
+////     set propertyName(value) {
+////         // store or validate value
+////     }
+//// };
+//// Example:
+const User = {
+    _email: 'h@hc.com',
+    _password: 'abc',
+    //// Getter for email
+    get email() {
+        return this._email.toUpperCase();
+    },
+    //// Setter for email
+    set email(value) {
+        this._email = value;
+    }
+};
+//// Create a new object using User as prototype
+const tea = Object.create(User);
+console.log(tea.email);
+//// Output:
+//// H@HC.COM
+////------------------------- How Object.create() works --------------------------//
+//// const tea = Object.create(User);
+//// Object.create(User) creates a new empty object.
+//// tea does NOT get its own copies of _email, _password,
+//// email getter, or email setter.
+//// Instead:
+//// tea ----> User (prototype)
+//// So when tea cannot find a property,
+//// JavaScript looks in User.
+////---------------------- What happens when reading email? ----------------------//
+//// console.log(tea.email);
+//// JavaScript checks if tea has its own property named "email".
+//// tea does not have one.
+//// JavaScript looks in tea's prototype (User).
+//// It finds:
+//// get email() {
+////     return this._email.toUpperCase();
+//// }
+//// The getter runs.
+//// Inside the getter:
+//// this === tea
+//// because the getter was called as:
+//// tea.email
+//// JavaScript looks for this._email.
+//// tea does not have _email,
+//// so it looks in the prototype (User).
+//// User._email = "h@hc.com"
+//// Returned value:
+//// "H@HC.COM"
+////---------------------- Important this behavior ----------------------//
+//// Even though the getter is stored in User,
+//// when accessed through tea.email:
+//// this refers to tea
+//// NOT User.
+//// This is very important in prototype-based objects.
+////---------------------- What happens when setting email? ----------------------//
+//// tea.email = "abc@gmail.com";
+//// JavaScript finds the setter in User:
+//// set email(value) {
+////     this._email = value;
+//// }
+//// Inside the setter:
+//// this === tea
+//// So JavaScript creates a new property on tea:
+//// tea._email = "abc@gmail.com"
+//// Now tea has its own _email property.
+//// User._email remains unchanged:
+//// User._email === "h@hc.com"
+////---------------------- After setting email ----------------------//
+//// tea.email = "abc@gmail.com";
+//// console.log(tea.email);
+//// // ABC@GMAIL.COM
+//// console.log(User.email);
+//// // H@HC.COM
+//// Because:
+//// tea._email = "abc@gmail.com"
+//// User._email = "h@hc.com"
+////---------------------- Reason use _email? ----------------------//
+//// If we wrote:
+//// set email(value) {
+////     this.email = value;
+//// }
+//// then:
+//// this.email = value -> setter runs -> this.email = value -> setter runs again -> Infinite recursion
+////  Maximum call stack size exceeded
+//// So we store the actual value in a different property:
+//// _email
+////---------------------- Object literal vs Object.defineProperty ----------------------//
+//// Object literal syntax:
+//// const obj = {
+////     get name() { ... },
+////     set name(value) { ... }
+//// };
+//// Object.defineProperty syntax:
+//// Object.defineProperty(obj, 'name', {
+////     get: function(){ ... },
+////     set: function(value){ ... }
+//// });
+//// Both create getters and setters.
+//// The object literal syntax is shorter and easier to read.
+
