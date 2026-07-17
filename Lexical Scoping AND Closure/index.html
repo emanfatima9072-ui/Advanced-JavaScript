@@ -1,0 +1,202 @@
+<!----------------------- JavaScript Lexical Scoping and Closures ------------------------>
+<!DOCTYPE html> <!-- Tells the browser that this is an HTML5 document -->
+<html lang="en"> <!-- Root element. lang="en" specifies that the page language is English -->
+<head>           <!-- Stores information about the webpage. Nothing inside <head> is displayed on the page -->
+    <meta charset="UTF-8"> <!-- Supports all characters including English, Urdu, Emojis, etc. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the webpage responsive on mobile devices -->
+    <title>Closure aur Chai</title>     <!-- Title displayed on the browser tab -->
+</head>
+<body style="background-color:#313131;">  <!-- Page background color -->
+   <button id="orange">Orange</button>      <!-- Button with id="orange" -->
+    <button id="green">Green</button>       <!-- Button with id="green" -->
+<script>
+////----------------------- Lexical Scoping Example -----------------------//
+    function init() {
+        let name = "Mozilla";
+        function displayName() {
+            console.log(name);
+        }
+        displayName();
+    }
+    init();
+    //// Explanation:
+    //// init() is the outer function.
+    //// name is created inside init().
+    //// displayName() is an inner function.
+    //// Because of Lexical Scoping,
+    //// displayName() can access variables
+    //// from its outer function.
+    //// Output:
+    //// Mozilla
+////----------------------- Another Lexical Scope Example -----------------------//
+    function outer() {
+        let username = "hitesh";
+       //console.log("OUTER", secret);
+        function inner() {
+            let secret = "my123";
+            console.log("inner", username);
+        }
+        function innerTwo() {
+            console.log("innerTwo", username);
+            ////console.log(secret); //// Error
+//// Reason:
+//// secret belongs only to inner().
+//// innerTwo() is another function.
+//// Sibling functions cannot access each other's variables.
+        }
+        inner();
+        innerTwo();
+    
+    }
+    outer();
+    //console.log("TOO OUTER", username);
+    //// Explanation :
+    //// outer() executes.
+    //// username is created.
+    //// JavaScript reaches:
+    //// console.log("OUTER", secret)
+    //// secret has NOT been declared yet.
+    //// secret exists only inside inner().
+    //// Therefore:
+    //// ReferenceError occurs.
+    //// Program stops.
+    //// inner() and innerTwo() never execute.
+    //// If we comment this line:
+    //// console.log("OUTER", secret);
+    //// Then:
+    //// inner()
+    //// can access username
+    //// because username belongs to outer().
+    //// Output:
+    //// inner hitesh
+////--------------------------------------------------//
+    //// innerTwo()
+    //// console.log(username);
+    //// Works because username belongs to outer().
+    //// console.log(secret);
+    //// Error.
+    //// Reason :
+    //// secret belongs only to inner().
+    //// innerTwo() is another function.
+    //// Sibling functions cannot access
+    //// each other's variables.
+////-------------------------------------------------//
+    //// console.log("TOO OUTER", username);
+    //// Error
+    //// username belongs to outer().
+    //// Outside the function,
+    //// username no longer exists.
+////----------------------- Closure Example -----------------------//
+    function makeFunc() {
+        const name = "Mozilla";
+        function displayName() {
+            console.log(name);
+        }
+        return displayName;
+    }
+    const myFunc = makeFunc();
+    myFunc();
+////Explanation:
+    //// makeFunc() executes.
+    //// name = "Mozilla" is created.
+    //// displayName() is created.
+    //// Instead of calling displayName(),
+    //// we RETURN it.
+    //// return displayName;
+    //// This returns the entire function.
+    //// myFunc stores that returned function.
+    //// const myFunc = makeFunc();
+    //// makeFunc() finishes execution.
+    //// Normally local variables disappear.
+    //// But...
+    //// displayName still remembers
+    //// name = "Mozilla".
+    //// This remembering behavior
+    //// is called Closure.
+    //// myFunc();
+    //// Executes displayName().
+    //// Output:
+    //// Mozilla
+
+</script>
+<script>   //Second Script
+    ////----------------------- Without Closure -----------------------//
+    document.getElementById("orange").onclick = function () {
+        document.body.style.backgroundColor = "orange";
+    }
+    document.getElementById("green").onclick = function () {
+        document.body.style.backgroundColor = "green";
+    }
+    //// Explanation:
+    //// Both buttons have separate functions.
+    //// This works correctly.
+    //// But:
+    //// Code is repeated.
+    //// We are writing almost the same function twice.
+    ////----------------------- Using Closure -----------------------//
+    function clickHandler(color) {
+        //// color becomes a local variable
+        //// of clickHandler().
+        return function () {
+            //// This returned function remembers color.
+            document.body.style.backgroundColor = `${color}`;
+        }
+    }
+    document.getElementById("orange").onclick = clickHandler("orange");
+    document.getElementById("green").onclick = clickHandler("green");
+    //// Explanation:
+    //// clickHandler("orange")
+    //// color = "orange"
+    //// A new function is returned.
+    //// That returned function remembers:
+    //// color = "orange"
+    //// Even after clickHandler()
+    //// finishes execution.
+    //// clickHandler("green")
+    //// Another function is created.
+    //// This function remembers
+    //// color = "green"
+    //// When Orange button is clicked:
+    //// Returned function executes.
+    //// It still knows
+    //// color = "orange"
+    //// Background becomes orange.
+    //// When Green button is clicked:
+    //// Returned function executes.
+    //// It still knows
+    //// color = "green"
+    //// Background becomes green.
+    //// This is Closure.
+    //// A function remembers variables
+    //// from the scope
+    //// in which it was created.
+    ////----------------Memory Visualization-------------------//
+    //// clickHandler("orange") -> color = "orange"  ->  Returned Function  ->   onclick stores this function.
+    //// clickHandler("green")   ->  color = "green"  ->    Returned Function   ->  onclick stores this function.
+
+    /////Reson of not assinging clickHandler:
+    //// document.getElementById("orange").onclick = clickHandler;
+    //// Because onclick needs a function
+    //// that already knows
+    //// which color to use.
+    //// clickHandler("orange")
+    //// returns a function
+    //// that remembers
+    //// color = "orange"
+    //// That returned function
+    //// is assigned to onclick.
+
+
+    ////Lexical Scoping : 
+    //// A function can access variables
+    //// from the scope
+    //// where it was defined.
+    //// Closure:
+    //// Closure is a combination of Function + Its Lexical Environment.
+    //// The function remembers
+    //// outer variables
+    //// even after the outer function
+    //// has finished execution.
+</script>
+</body>
+</html>
