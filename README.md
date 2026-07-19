@@ -19,8 +19,6 @@ This repository covers:
 - Rest Operator
 - Optional Chaining
 - Iterators
-- Generators
-- ES Modules
 - CommonJS Modules
 # Repository Structure
 Advanced-JavaScript
